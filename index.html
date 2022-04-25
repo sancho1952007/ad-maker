@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Ad Maker For Your Site!</title>
+    <script src="https://sancho1952007.github.io/ad-maker/lib/ad-maker.min.js"></script>
+    <link rel="stylesheet" href="https://sancho1952007.github.io/ad-maker/lib/ad-maker.min.css">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <link rel="shortcut icon" href="./images/favicon.png" type="image/x-icon">
+</head>
+
+<body>
+    <div class="container">
+        <h2 class="title">Free Ad Maker</h2>
+
+        <p class="inputs-title">Upload Ad Image/Video</p>
+        <input type="file" class="file-upload" accept=".png,.jpg,.jpeg,.gif,.mp4" hidden>
+        <button class="file-upload-btn" onclick="document.querySelector('.file-upload').click();">Upload Ad Image/Video&nbsp;&nbsp;<i class="bi bi-upload"></i></button>
+
+        <p class="inputs-title">Ad Click URL</p>
+        <input type="text" class="ad-url" placeholder="Enter Ad Click URL">
+
+        <p class="inputs-title">Ad Display Text</p>
+        <input type="text" class="ad-text" placeholder="Enter Display Text">
+
+        <p class="inputs-title">Width</p>
+        <input type="number" class="width" placeholder="Enter Width Of Ad">
+
+        <p class="inputs-title">Height</p>
+        <input type="number" class="height" placeholder="Enter Height Of Ad">
+
+        <button class="make-btn">Make My Ad!</button>
+        <button class="preview-btn">Preview Ad</button>
+    </div>
+</body>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat&family=PT+Sans&display=swap');
+    @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css");
+    body {
+        margin: 0;
+        padding: 0;
+        background: #f1f1f1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        background-color: lightblue;
+    }
+    
+    .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: calc(90% - 20px);
+        max-width: 400px;
+        background-color: aliceblue;
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid rgb(194, 190, 190);
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .title {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: bold;
+        color: #000;
+        margin-bottom: 10px;
+    }
+    
+    .inputs-title {
+        width: 100%;
+        text-align: left;
+        font-weight: bold;
+        margin-bottom: 10px;
+        font-family: 'PT Sans', sans-serif;
+    }
+    
+    input[type="number"],
+    input[type="text"] {
+        width: 100%;
+        height: 30px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 5px;
+        margin-bottom: 10px;
+        font-family: 'Montserrat', sans-serif;
+        transition: all 0.3s ease;
+    }
+    
+    input[type="number"]:focus,
+    input[type="text"]:focus {
+        border: 1px solid rgb(177, 177, 177);
+    }
+    
+    .file-upload-btn {
+        width: 100%;
+        height: 30px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 5px;
+        margin-bottom: 10px;
+        font-family: 'Montserrat', sans-serif;
+        background-color: #f1f1f1;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .file-upload-btn:active {
+        background-color: #cccccc;
+    }
+    
+    .make-btn {
+        width: 100%;
+        height: 40px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 5px;
+        margin-bottom: 10px;
+        margin-top: 10px;
+        font-family: 'Montserrat', sans-serif;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .make-btn:active {
+        background-color: #ccc;
+    }
+    
+    .preview-btn {
+        width: 100%;
+        height: 40px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 5px;
+        margin-bottom: 10px;
+        margin-top: 10px;
+        font-family: 'Montserrat', sans-serif;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        background-color: rgb(70, 35, 200);
+        color: white;
+    }
+    
+    .preview-btn:active {
+        background-color: rgb(59, 31, 161);
+    }
+    
+    .preview-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 0;
+    }
+    
+    .preview-box {
+        border-radius: 10px;
+        z-index: 1;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    
+    .download-box {
+        width: calc(100% - 20px);
+        border-radius: 10px;
+        z-index: 1;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 90%;
+        max-width: 500px;
+        background-color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        padding: 10px;
+        padding-bottom: 20px;
+    }
+    
+    .download-title {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: bold;
+        color: #000;
+        margin-bottom: 10px;
+        width: 100%;
+        text-align: center;
+    }
+    
+    .download-code {
+        width: calc(100% - 11px);
+        height: 30px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 5px;
+        font-family: 'Montserrat', sans-serif;
+        transition: all 0.3s ease;
+        background-color: #f1f1f1;
+        resize: none;
+        white-space: pre;
+        overflow-y: hidden;
+    }
+    
+    .download-code#script {
+        height: 42px;
+    }
+    
+    .download-desc {
+        font-family: 'PT Sans', sans-serif;
+        font-size: 17px;
+        color: #000;
+        margin-bottom: 10px;
+        width: 100%;
+        text-align: center;
+    }
+    
+    .download-code::-webkit-scrollbar {
+        height: 7px;
+    }
+    
+    .download-code::-webkit-scrollbar-thumb {
+        background-color: #ccc;
+        border-radius: 10px;
+    }
+    
+    .download-code::-webkit-scrollbar-track {
+        background-color: #f1f1f1;
+    }
+    
+    .download-copy-btn {
+        width: 90%;
+        height: 40px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 5px;
+        margin-bottom: 10px;
+        margin-top: 10px;
+        font-family: 'Montserrat', sans-serif;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        background-color: rgb(70, 35, 200);
+        color: white;
+    }
+    
+    .download-copy-btn:active {
+        background-color: rgb(59, 31, 161);
+    }
+    
+    .download-instructions {
+        font-family: 'PT Sans', sans-serif;
+        font-size: 20px;
+        color: #000;
+        margin-bottom: 10px;
+        width: 100%;
+        text-align: center;
+    }
+    
+    .credit {
+        font-family: 'PT Sans', sans-serif;
+        font-size: 17px;
+        color: #000;
+        width: 100%;
+        text-align: center;
+        margin: 2px 0;
+        padding: 0;
+    }
+    
+    .credit-link {
+        font-family: 'PT Sans', sans-serif;
+        font-size: 17px;
+        color: rgb(2, 116, 255);
+        width: 100%;
+        text-align: center;
+        text-decoration: underline;
+    }
+    
+    .swal-title,
+    .swal-text {
+        font-family: 'Montserrat', sans-serif;
+    }
+    
+    * {
+        outline: none;
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+     ::-webkit-scrollbar {
+        width: 10px;
+    }
+    
+     ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    
+     ::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 3px;
+    }
+    
+     ::-webkit-scrollbar-thumb:active {
+        background: rgb(121, 121, 121);
+    }
+</style>
+
+<script>
+    var filename;
+    var fileType;
+    var imageBlob;
+
+    window.onload = function() {
+
+        document.querySelector('.preview-btn').addEventListener('click', () => {
+            var adText = document.querySelector('.ad-text').value;
+            var adUrl = document.querySelector('.ad-url').value;
+            var width = document.querySelector('.width').value.replaceAll('e', '');
+            var height = document.querySelector('.height').value.replaceAll('e', '');
+            var image = document.querySelector('.file-upload').files[0];
+
+            if (adText.trim() != '' && adUrl.trim() != '' && width.trim() != '' && height.trim() != '' && image != null && image != undefined) {
+
+                if (width.trim() != '' && height.trim() != '') {
+                    var div = document.createElement('div');
+                    div.className = 'preview-overlay';
+
+                    var box = document.createElement('div');
+                    box.className = 'preview-box';
+                    if (fileType == 'video') {
+                        console.log(imageBlob);
+                        box.innerHTML = `
+                            <div class="ad" url="` + adUrl + `" width="${width}" height="${height}">
+                                <p>Advertisment</p>
+                                <video src="` + imageBlob + `"></video>
+                                <b>` + adText + `</b>
+                            </div>`;
+
+                        div.onclick = function() {
+                            this.remove();
+                            document.querySelector('.preview-box').remove();
+                        }
+
+                    } else {
+                        box.innerHTML = `
+                            <div class="ad" url="` + adUrl + `" width="${width}" height="${height}">
+                                <p>Advertisment</p>
+                                <img src="` + imageBlob + `" alt="ad-image">
+                                <b>` + adText + `</b>
+                            </div>`;
+
+                        div.onclick = function() {
+                            this.remove();
+                            document.querySelector('.preview-box').remove();
+                        }
+                    }
+
+                    if (fileType == 'video') {
+                        swal('Click OK To Start The Video...');
+                    }
+
+                    document.body.appendChild(box);
+                    document.body.appendChild(div);
+                    RefreshAds();
+
+                } else {
+                    swal('Warning', 'Please fill all the feilds & Images!', 'warning');
+                }
+            } else {
+                swal('Warning', 'Please fill all the feilds & Images!', 'warning');
+            }
+        });
+
+        document.querySelector('.file-upload').addEventListener('change', () => {
+            var file = document.querySelector('.file-upload').files[0];
+            if (file.name.toString().toLowerCase().endsWith('.jpg') || file.name.toString().toLowerCase().endsWith('.png') || file.name.toString().toLowerCase().endsWith('.jpeg') || file.name.toString().toLowerCase().endsWith('.gif') || file.name.toString().toLowerCase().endsWith('.mp4')) {
+                filename = file.name;
+
+                if (file.name.toString().toLowerCase().endsWith('.mp4')) {
+                    fileType = 'video';
+                } else {
+                    fileType = 'image';
+                }
+
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    document.querySelector('.file-upload-btn').innerHTML = file.name;
+                    imageBlob = URL.createObjectURL(file);
+                }
+                reader.readAsDataURL(file);
+            } else {
+                swal('Warning', 'Please upload an image!', 'warning');
+            }
+        });
+
+        document.querySelector('.make-btn').addEventListener('click', () => {
+            var width = document.querySelector('.width').value;
+            var height = document.querySelector('.height').value;
+            var adUrl = document.querySelector('.ad-url').value;
+            var adText = document.querySelector('.ad-text').value;
+            var image = document.querySelector('.file-upload').files[0];
+
+            if (width.trim() != '' && height.trim() != '' && adUrl.trim() != '' && adText.trim() != '' && image != null && image != undefined) {
+
+                var download = document.createElement('div');
+                download.className = 'preview-overlay';
+
+                var download_box = document.createElement('div');
+                download_box.className = 'download-box';
+                if (fileType == 'image') {
+                    download_box.innerHTML = `
+        <p class="download-title">Add This Code Where You Want To Display The Advertisment</p>
+        <textarea class="download-code" id="ad-code" disabled><div class="ad" url="` + adUrl + `" width="${width}" height="${height}"><p>Advertisment</p><img src="./ad-content/` + filename + `" alt="ad-image"><b>` + adText + `</b></div></textarea><br>
+        <button class="download-copy-btn" onclick="if (navigator.clipboard){try{navigator.clipboard.writeText(document.querySelector('.download-code#ad-code').value);this.innerHTML='✔&nbsp;&nbsp;&nbsp;Copied Code';}catch(e){console.error(e);swal('Copy Error', 'Could Not Copy Code To Clipboard', 'error')}}else{swal('Old Browser Warning', 'Please Update/Upgrade Your Browser To Allow Access To Clipboard.', 'warning');}"><i class="bi bi-clipboard"></i>&nbsp;&nbsp;&nbsp;Copy Code</button>
+        <p class="download-desc">* You Can Also Add An Id & More Classnames & Customize/Change The Position Of The Ad.</p>
+
+        <br><br>
+
+        <p class="download-title">Insert This In Your &lt;head&gt; Tag</p>
+        <textarea class="download-code" id="script" disabled>\<script src="https://sancho1952007.github.io/ad-maker/lib/ad-maker.min.js"\>\<\/script\>
+<link rel="stylesheet" href="https://sancho1952007.github.io/ad-maker/lib/ad-maker.min.css"></textarea>
+        <button class="download-copy-btn" onclick="if (navigator.clipboard){try{navigator.clipboard.writeText(document.querySelector('.download-code#script').value);this.innerHTML='✔&nbsp;&nbsp;&nbsp;Copied Code';}catch(e){console.error(e);swal('Copy Error', 'Could Not Copy Code To Clipboard', 'error')}}else{swal('Old Browser Warning', 'Please Update/Upgrade Your Browser To Allow Access To Clipboard.', 'warning');}"><i class="bi bi-clipboard"></i>&nbsp;&nbsp;&nbsp;Copy Code</button>
+
+
+        <h2 class='download-instructions'>Please Make A Folder Called ad-content Then, Move ` + filename + ` To That Folder</h2>
+        <br>
+        <h2 class="credit">Created By: <a class="credit-link" href="https://sancho1952007.github.io" target="_blank">Sancho Godinho</a></h2>
+        <h2 class="credit">Source Code: <a class="credit-link" href="https://github.com/sancho1952007/ad-maker" target="_blank">Ad Maker App & Library.</a></h2>
+        <h2 class="credit">Logo Credit: <a class="credit-link" href="https://icons8.com/icon/2SALm3gEBTw3/advertising" target="_blank">https://icons8.com/icon/2SALm3gEBTw3/advertising</a></h2>
+        `;
+                } else {
+                    download_box.innerHTML = `
+        <p class="download-title">Add This Code Where You Want To Display The Advertisment</p>
+        <textarea class="download-code" id="ad-code" disabled><div class="ad" url="` + adUrl + `" width="${width}" height="${height}"><p>Advertisment</p><video src="./ad-content/` + filename + `" alt="ad-video"></video><b>` + adText + `</b></div></textarea><br>
+        <button class="download-copy-btn" onclick="if (navigator.clipboard){try{navigator.clipboard.writeText(document.querySelector('.download-code#ad-code').value);this.innerHTML='✔&nbsp;&nbsp;&nbsp;Copied Code';}catch(e){console.error(e);swal('Copy Error', 'Could Not Copy Code To Clipboard', 'error')}}else{swal('Old Browser Warning', 'Please Update/Upgrade Your Browser To Allow Access To Clipboard.', 'warning');}"><i class="bi bi-clipboard"></i>&nbsp;&nbsp;&nbsp;Copy Code</button>
+        <p class="download-desc">* You Can Also Add An Id & More Classnames & Customize/Change The Position Of The Ad.</p>
+
+        <br><br>
+
+        <p class="download-title">Insert This In Your &lt;head&gt; Tag</p>
+        <textarea class="download-code" id="script" disabled>\<script src="https://sancho1952007.github.io/ad-maker/lib/ad-maker.min.js"\>\<\/script\>
+<link rel="stylesheet" href="https://sancho1952007.github.io/ad-maker/lib/ad-maker.min.css"></textarea>
+        <button class="download-copy-btn" onclick="if (navigator.clipboard){try{navigator.clipboard.writeText(document.querySelector('.download-code#script').value);this.innerHTML='✔&nbsp;&nbsp;&nbsp;Copied Code';}catch(e){console.error(e);swal('Copy Error', 'Could Not Copy Code To Clipboard', 'error')}}else{swal('Old Browser Warning', 'Please Update/Upgrade Your Browser To Allow Access To Clipboard.', 'warning');}"><i class="bi bi-clipboard"></i>&nbsp;&nbsp;&nbsp;Copy Code</button>
+
+
+        <h2 class='download-instructions'>Please Make A Folder Called ad-images Then, Move ` + filename + ` To That Folder</h2>
+        <br>
+        <h2 class="credit">Created By: <a class="credit-link" href="https://sancho1952007.github.io" target="_blank">Sancho Godinho</a></h2>
+        <h2 class="credit">Source Code: <a class="credit-link" href="https://github.com/sancho1952007/ad-maker" target="_blank">Ad Maker App & Library.</a></h2>
+        <h2 class="credit">Logo Credit: <a class="credit-link" href="https://icons8.com/icon/2SALm3gEBTw3/advertising" target="_blank">https://icons8.com/icon/2SALm3gEBTw3/advertising</a></h2>
+        `;
+                }
+
+                download.onclick = function() {
+                    this.remove();
+                    document.querySelector('.download-box').remove();
+                }
+
+                document.body.appendChild(download_box);
+                document.body.appendChild(download);
+            } else {
+                swal('Warning', 'Please fill all the feilds & Images!', 'warning');
+            }
+        });
+    }
+</script>
+
+</html>
