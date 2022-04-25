@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&family=PT+Sans&display=swap');
+.ad {
+    transition: all 0.5s ease;
+}
+
+.ad {
+    width: fit-content;
+    background-color: #f2f2f2;
+    padding: 10px;
+    text-align: center;
+    font-size: 20px;
+    font-family: monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 5px;
+    user-select: none;
+    cursor: pointer;
+    margin: 0;
+    padding-top: 2px;
+    border: 1px solid #747474;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+    overflow: hidden;
+}
+
+.ad:active {
+    background-color: #e6e6e6;
+}
+
+.ad>p {
+    font-size: 20px;
+    font-family: 'PT Sans', sans-serif;
+    color: grey;
+    margin: 0;
+    padding: 0;
+}
+
+.ad>img {
+    margin: 0;
+    padding: 0;
+    pointer-events: none;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.ad>video {
+    margin: 0;
+    padding: 0;
+    pointer-events: none;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.ad>b {
+    word-wrap: break-word;
+    font-size: 20px;
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', sans-serif;
+}
